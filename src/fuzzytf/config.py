@@ -76,6 +76,7 @@ class TrainConfig:
     device: str = "cpu"
     # pesos das perdas multitarefa
     w_action: float = 1.0
+    w_band: float = 0.5          # envelope tem peso próprio (ver QP-10)
     w_advisory: float = 0.5
     w_forecast: float = 0.2      # pré-treino: prever estado fuzzy em k+1
     w_masked_state: float = 0.2  # pré-treino: MLM sobre tokens de estado

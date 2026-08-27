@@ -12,6 +12,11 @@ mais comum de vazamento em séries industriais.
 
 **Nenhum documento do futuro.** Ver `docs/05` §1.
 
+**Referência trivial em toda tabela.** Todo resultado de ação vem acompanhado
+de `skill_over_zero = 1 − MAE/MAE_zero`. Nas três primeiras execuções deste
+projeto, o MAE absoluto parecia razoável (0,087) e era exatamente o do preditor
+"não mexer" — sem a referência ao lado, o bug teria passado.
+
 **Semente fixa e configuração versionada.** Cada experimento é um JSON em
 `experiments/`; o `report.json` guarda a configuração usada junto dos
 resultados. Resultado sem configuração ao lado não entra no relatório.

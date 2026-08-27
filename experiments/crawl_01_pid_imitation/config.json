@@ -35,7 +35,7 @@
     "mixer": "anfis",
     "mlp_ratio": 4.0,
     "n_context_slots": 0,
-    "dropout": 0.1,
+    "dropout": 0.0,
     "norm_eps": 1e-05
   },
   "train": {
@@ -47,7 +47,8 @@
     "grad_clip": 1.0,
     "seed": 0,
     "device": "cpu",
-    "w_action": 4.0,
+    "w_action": 1.0,
+    "w_band": 0.5,
     "w_advisory": 0.5,
     "w_forecast": 0.05,
     "w_masked_state": 0.05,

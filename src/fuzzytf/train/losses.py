@@ -51,7 +51,7 @@ def band_loss(lo: torch.Tensor, hi: torch.Tensor, target: torch.Tensor) -> torch
     return (2.0 * too_wide + too_narrow).mean()
 
 
-def control_loss(out, batch, huber_beta: float = 0.2) -> torch.Tensor:
+def control_loss(out, batch, huber_beta: float = 0.1) -> torch.Tensor:
     target = batch["target_delta"].unsqueeze(-1)
     raw = F.smooth_l1_loss(out.control.delta_raw, target, beta=huber_beta)
     clipped = F.smooth_l1_loss(
@@ -74,8 +74,13 @@ def total_loss(
     loss = weights.w_action * control_loss(out, batch)
     parts["action"] = float(loss.detach())
 
+    # O envelope tem peso próprio: amarrá-lo a `w_action` faz a perda de banda
+    # (hinge de largura, ~0,3) dominar a de ação (Huber sobre escalar, ~0,07)
+    # justamente quando se aumenta o peso da ação — e as duas cabeças leem o
+    # mesmo token de saída.
+    w_band = getattr(weights, "w_band", weights.w_action)
     lb = band_loss(out.control.band_lo, out.control.band_hi, batch["target_band"])
-    loss = loss + weights.w_action * lb
+    loss = loss + w_band * lb
     parts["band"] = float(lb.detach())
 
     if out.advisory is not None and "target_advisory" in batch:

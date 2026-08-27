@@ -125,6 +125,17 @@ Coisas que já sabemos, e que custaram experimento:
    Com a escala, 3 blocos vão a `skill ≈ 0,32` e 2 blocos sobem para `0,69`, nas
    mesmas 300 iterações. A camada ANFIS soma `K` consequentes, então o efeito
    aparece antes do que apareceria com um MLP.
-7. **No U-200, a informação causal está fora da janela de dados.** As ordens de
+7. **Dropout de 0,1 impede o aprendizado nesta escala.** O alvo é uma regressão
+   fina (a ação depende da diferença entre duas amostras consecutivas) e o sinal
+   específico de cada amostra é da ordem de 5% da magnitude do fluxo residual.
+   Com `dropout=0,1`, `skill` fica em 0,003; com 0,0, sobe para 0,22 nas mesmas
+   300 iterações. Regularização por dropout é para o regime de escala do Run,
+   não para o Crawl.
+8. **O peso do envelope não pode ficar amarrado ao da ação.** As duas cabeças
+   leem o mesmo token de saída, e a perda de banda (hinge de largura, ~0,3) é
+   uma ordem de grandeza maior que a de ação (Huber sobre escalar, ~0,07):
+   aumentar `w_action` aumentava junto a perda que abafa a ação. `w_band` agora
+   é parâmetro próprio.
+9. **No U-200, a informação causal está fora da janela de dados.** As ordens de
    trabalho relevantes precedem o historian em 10 dias. Supervisão distante
    dentro da janela não as alcança — daí QP-11.

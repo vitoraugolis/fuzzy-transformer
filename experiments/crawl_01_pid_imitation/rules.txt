@@ -1,0 +1,38 @@
+Regras mais ativas (média de força de disparo)
+========================================================
+bloco 1 cabeça 2 regra # 19 | força 0.1048
+    SE eixo2 é medio[0.59] E eixo3 é baixo[0.64] E eixo5 é alto[0.52]
+    dispara sobre: T-102 26%, V-097 19%, F-301 19%
+bloco 2 cabeça 3 regra #  2 | força 0.0968
+    SE eixo0 é medio[0.57] E eixo2 é alto[0.58] E eixo4 é medio[0.73] E eixo5 é alto[0.51]
+    dispara sobre: SP-102 22%, F-301 22%, P-204 19%
+bloco 0 cabeça 2 regra # 17 | força 0.0942
+    SE eixo1 é medio[0.56]
+    dispara sobre: T-102 23%, SP-102 20%, F-301 20%
+bloco 0 cabeça 2 regra # 28 | força 0.0905
+    SE eixo1 é medio[0.52] E eixo4 é alto[0.55]
+    dispara sobre: T-102 21%, SP-102 20%, F-301 20%
+bloco 0 cabeça 3 regra # 19 | força 0.0846
+    SE eixo3 é medio[0.72] E eixo4 é medio[0.62]
+    dispara sobre: T-102 22%, P-204 22%, SP-102 21%
+bloco 0 cabeça 2 regra # 24 | força 0.0831
+    SE eixo3 é medio[0.54] E eixo4 é alto[0.51] E eixo5 é baixo[0.66]
+    dispara sobre: T-102 23%, SP-102 20%, F-301 20%
+bloco 0 cabeça 3 regra #  9 | força 0.0806
+    SE eixo0 é medio[0.57] E eixo3 é medio[0.50] E eixo4 é medio[0.58]
+    dispara sobre: T-102 24%, SP-102 21%, P-204 20%
+bloco 1 cabeça 3 regra # 26 | força 0.0792
+    SE (antecedente difuso)
+    dispara sobre: V-097 23%, SP-102 23%, P-204 20%
+bloco 0 cabeça 3 regra # 17 | força 0.0759
+    SE eixo1 é baixo[0.51]
+    dispara sobre: V-097 22%, T-102 21%, P-204 21%
+bloco 2 cabeça 2 regra # 15 | força 0.0735
+    SE eixo0 é baixo[0.62] E eixo3 é medio[0.60] E eixo4 é alto[0.53] E eixo5 é baixo[0.53]
+    dispara sobre: P-204 34%, SP-102 22%, V-097 18%
+bloco 1 cabeça 0 regra # 30 | força 0.0733
+    SE eixo1 é alto[0.75] E eixo2 é baixo[0.65]
+    dispara sobre: V-097 34%, SP-102 24%, F-301 19%
+bloco 1 cabeça 1 regra #  5 | força 0.0726
+    SE eixo0 é medio[0.58] E eixo3 é medio[0.58]
+    dispara sobre: P-204 28%, SP-102 25%, T-102 22%

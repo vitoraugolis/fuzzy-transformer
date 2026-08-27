@@ -1,0 +1,111 @@
+{
+  "open_loop": {
+    "delta_mae": 0.05643430198032462,
+    "delta_rmse": 0.08060083180613829,
+    "delta_r2": 0.630523509216637,
+    "delta_mae_zero_baseline": 0.08680223673582077,
+    "skill_over_zero": 0.3498519842054275,
+    "violation_rate": 0.3023097826086957,
+    "mean_width_ratio": 1.032441408146377,
+    "band_mae": 0.034944679787061075,
+    "f1_macro": 0.47615284188210705,
+    "f1_micro": 0.48932788374205266,
+    "exact_match": 0.532608695652174,
+    "hamming": 0.19098165760869565,
+    "fault_accuracy": 0.6453804347826086,
+    "epoch": 14,
+    "step": 2100,
+    "elapsed_s": 1940.5935318470001
+  },
+  "closed_loop": {
+    "PI (referência)": {
+      "iae": 0.2365693229891678,
+      "ise": 0.10922982118639714,
+      "max_abs_error": 0.9421296263984118,
+      "control_effort": 1.382320516324787,
+      "reversals": 98.75,
+      "alarm_fraction": 0.0
+    },
+    "FT-IC": {
+      "iae": 2.5437689658273688,
+      "ise": 10.701801278208126,
+      "max_abs_error": 7.092569889890598,
+      "control_effort": 0.46370137141566575,
+      "reversals": 28.5,
+      "alarm_fraction": 0.01681818181818182
+    },
+    "FT-IC sem envelope": {
+      "iae": 2.5437689658273688,
+      "ise": 10.701801278208126,
+      "max_abs_error": 7.092569889890598,
+      "control_effort": 0.46370137141566575,
+      "reversals": 28.5,
+      "alarm_fraction": 0.01681818181818182
+    }
+  },
+  "config": {
+    "name": "crawl-01",
+    "stage": "crawl",
+    "tokenizer": {
+      "window": 24,
+      "top_p": 3,
+      "layout": "tag_major",
+      "use_value_channel": true,
+      "use_lag_embedding": true
+    },
+    "model": {
+      "d_model": 128,
+      "n_blocks": 3,
+      "attention": {
+        "n_heads": 4,
+        "dropout": 0.0,
+        "causal": false,
+        "use_tag_bias": true
+      },
+      "anfis": {
+        "n_rules": 32,
+        "n_axes": 6,
+        "n_mfs": 3,
+        "n_heads": 4,
+        "consequent": "tsk1",
+        "rank": 8,
+        "hard_rules": false,
+        "firing_temperature": 1.0,
+        "dropout": 0.0
+      },
+      "n_actions": 1,
+      "action_terms": 7,
+      "n_advisories": 8,
+      "n_fault_classes": 5,
+      "mixer": "anfis",
+      "mlp_ratio": 4.0,
+      "n_context_slots": 0,
+      "dropout": 0.0,
+      "norm_eps": 1e-05
+    },
+    "train": {
+      "lr": 0.0008,
+      "weight_decay": 0.01,
+      "batch_size": 64,
+      "epochs": 15,
+      "warmup_steps": 150,
+      "grad_clip": 1.0,
+      "seed": 0,
+      "device": "cpu",
+      "w_action": 1.0,
+      "w_band": 0.5,
+      "w_advisory": 0.5,
+      "w_forecast": 0.05,
+      "w_masked_state": 0.05,
+      "w_rule_entropy": 0.001
+    },
+    "notes": "Imitação do professor (PI + supervisório) no simulador da malha TIC-102/V-097. Objetivo: verificar que a pilha atenção+ANFIS aprende a ação, o envelope de contingência e as orientações, e que fecha a malha sem degradar o desempenho.",
+    "tags": [
+      "T-102",
+      "P-204",
+      "F-301",
+      "V-097"
+    ],
+    "variable_book": null
+  }
+}

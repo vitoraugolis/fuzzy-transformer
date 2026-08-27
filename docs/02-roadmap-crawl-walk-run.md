@@ -39,18 +39,35 @@ estado mascarado) sobre episódios simulados.
 (Δu = 0) por margem clara, com o *split* feito **por episódio**.
 → `scripts/run_crawl.py`
 
-### C4 — Malha fechada
+### C4 — Malha fechada ✗ não fechou (ver `docs/10-relatorio-crawl-01.md`)
 O modelo substitui o PI no simulador (`eval/rollout.py`).
 **Portão:** IAE do FT-IC ≤ 1,2 × IAE do PI nos episódios sem falha, **e**
 IAE estritamente menor nos episódios com `valve_travel_limit`, **e** nenhuma
 oscilação sustentada (número de reversões de sinal comparável ao do PI).
+**Resultado:** IAE 2,54 contra 0,237 do PI (10,7×). Causa isolada: viés médio de
+−0,040% de curso por amostra que, com ação incremental sobre planta integradora,
+**acumula** — 24% de curso de deriva em 600 amostras. Correlação com a ação do
+professor é 0,760, então não é ruído; é viés.
 
-### C5 — Antecipação e leitura de regras
+### C4a — Corrigir o viés acumulado *(novo, decorrente de C4)*
+Três frentes em ordem de custo: âncora absoluta de `u`; perda sobre o comando
+acumulado em horizonte H; ajuste em malha fechada tipo DAgger para tratar o
+desvio de distribuição.
+**Portão:** o mesmo de C4.
+
+### C5 — Antecipação e leitura de regras ✗ não fechou
 **Portão duplo:**
 1. `lead_over_alarm` mediana > 0 nos episódios de saturação de válvula — o
    modelo sinaliza antes do alarme de temperatura;
 2. as 10 regras mais ativas são legíveis (`interpret/top_rules`) e pelo menos
    metade delas é atribuível a uma tag dominante coerente com a falha.
+
+**Resultado:** a extração funciona e os antecedentes são nítidos (confiança 0,52
+a 0,72), mas a atribuição por tag é difusa — 26%/19%/19% entre três tags, quase
+a uniforme entre cinco, e nenhuma das dez regras mais ativas tem tag dominante.
+É a QP-7 se manifestando: nada no treino obriga os eixos latentes a se alinharem
+com grandezas físicas. A metade da antecipação não foi medida, porque a métrica
+só faz sentido sobre rollouts válidos — e C4 não fechou.
 
 O portão 2 é qualitativo por natureza. O procedimento de avaliação está em
 `docs/06-protocolo-experimental.md` §5; o julgamento é registrado por escrito,
@@ -189,7 +206,9 @@ irregular e sem alinhamento entre historiador e sistema de manutenção.
 
 ## Estado atual
 
-Implementado e verificado: C1, C2, C3 (o laço de treino roda ponta a ponta) e a
-infraestrutura de C4/C5 (rollout em malha fechada, métricas de antecipação,
-extração de regras). O próximo passo é rodar as ablações do Crawl com orçamento
-computacional adequado e escrever o relatório do estágio.
+Fechados: C1, C2, C3 (`skill_over_zero` = +0,350 contra o preditor trivial) e
+W1 (ingestão completa do acervo U-200). Não fecharam: C4 e C5 — o relatório está
+em `docs/10-relatorio-crawl-01.md`, com o diagnóstico e o encaminhamento.
+
+O próximo passo é **C4a**, não as ablações: não faz sentido medir a contribuição
+do ANFIS contra um MLP enquanto a política ainda não fecha malha.

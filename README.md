@@ -87,8 +87,9 @@ tests/         43 testes
 
 | Estágio | Situação |
 |---|---|
-| Crawl C1–C3 (fuzzy, bloco, treino) | implementado e testado |
-| Crawl C4–C5 (malha fechada, regras) | infraestrutura pronta; ablações pendentes |
+| Crawl C1–C3 (fuzzy, bloco, treino) | fechado — `skill_over_zero` = +0,350 |
+| Crawl C4 (malha fechada) | **não fechou** — IAE 2,54 vs 0,237 do PI; viés acumulado |
+| Crawl C5 (regras legíveis) | **não fechou** — antecedentes nítidos, atribuição difusa |
 | Walk W1 (ingestão do U-200) | implementado — 11 tags, 115 slots, 33 documentos em 8 silos |
 | Walk W2–W5 | em aberto |
 | Run | em aberto |
@@ -110,6 +111,7 @@ Achados já registrados (e o que custaram) estão em
 | [07 — Questões](docs/07-perguntas-de-pesquisa.md) | QP-1..QP-12 e achados |
 | [08 — Estudo de caso](docs/08-case-study.md) | U-200 e a integração |
 | [09 — Segurança](docs/09-seguranca-e-governanca.md) | camadas de proteção e governança |
+| [10 — Relatório Crawl-01](docs/10-relatorio-crawl-01.md) | resultados, portões que não fecharam e por quê |
 
 ## Licença
 

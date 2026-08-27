@@ -40,9 +40,18 @@ def mf_label(idx: int, n_mfs: int) -> str:
 
 @torch.no_grad()
 def explain_sample(
-    model, book: VariableBook, sample: Dict[str, np.ndarray], cfg: Optional[DatasetConfig] = None
+    model,
+    book: VariableBook,
+    sample: Dict[str, np.ndarray],
+    cfg: Optional[DatasetConfig] = None,
+    advisories: Sequence[str] = ADVISORIES,
+    faults: Sequence[str] = FAULTS,
 ) -> str:
-    """Relatório textual de uma única decisão do modelo."""
+    """Relatório textual de uma única decisão do modelo.
+
+    ``advisories``/``faults`` são os vocabulários de saída; o padrão é o do
+    simulador, e o estudo de caso passa o seu (``u200.ADVISORIES_U200``).
+    """
     cfg = cfg or DatasetConfig()
     model.eval()
     batch = collate([sample])
@@ -84,8 +93,8 @@ def explain_sample(
         p = out.fault_logits[0].softmax(-1).cpu().numpy()
         lines += ["", "=== Diagnóstico ==="]
         for i in np.argsort(-p)[:3]:
-            lines.append(f"  {p[i] * 100:5.1f}% {FAULTS[i]}")
-        lines.append(f"  (verdade: {FAULTS[int(sample['target_fault'])]})")
+            lines.append(f"  {p[i] * 100:5.1f}% {_name(faults, i)}")
+        lines.append(f"  (verdade: {_name(faults, int(sample['target_fault']))})")
 
     if out.advisory is not None:
         p = torch.sigmoid(out.advisory.logits[0]).cpu().numpy()
@@ -95,7 +104,7 @@ def explain_sample(
                 continue
             tag = _pointer_tag(out, i, sample, book)
             alvo = "✓" if sample["target_advisory"][i] > 0.5 else "✗"
-            lines.append(f"  [{alvo}] {p[i] * 100:5.1f}% {ADVISORIES[i]}  → {tag}")
+            lines.append(f"  [{alvo}] {p[i] * 100:5.1f}% {_name(advisories, i)}  → {tag}")
         if all(p < 0.5):
             lines.append("  (nenhuma orientação acima do limiar)")
 
@@ -180,6 +189,11 @@ def top_rules(model, dataset, cfg: Optional[DatasetConfig] = None, n: int = 10, 
             f"    dispara sobre: {top_tags}"
         )
     return "\n".join(lines) + "\n"
+
+
+def _name(names: Sequence[str], i: int) -> str:
+    """Nome do rótulo, tolerando vocabulários de tamanho diferente do padrão."""
+    return names[i] if 0 <= i < len(names) else f"classe_{i}"
 
 
 def _action_term_names(n: int) -> Sequence[str]:

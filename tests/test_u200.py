@@ -125,3 +125,32 @@ def test_controlador_respeita_o_contrato():
         assert 0.0 <= q <= 1.0
     assert len(ctrl.log) == 6
     assert set(ctrl.advisories_raised()) == set(u200.ADVISORIES_U200)
+
+
+def test_explicacao_usa_vocabulario_do_caso():
+    """A interpretação precisa aceitar vocabulários maiores que o do simulador."""
+    torch = pytest.importorskip("torch")
+    from fuzzytf.config import ModelConfig, TokenizerConfig
+    from fuzzytf.data.dataset import DatasetConfig, EpisodeDataset
+    from fuzzytf.interpret import explain_sample
+    from fuzzytf.model import FTIC
+
+    book = u200.variable_book()
+    cfg = ModelConfig(
+        d_model=32, n_blocks=1, n_advisories=len(u200.ADVISORIES_U200), n_fault_classes=2
+    )
+    cfg.attention.n_heads = 2
+    cfg.anfis.n_heads = 2
+    cfg.anfis.n_rules = 8
+    cfg.anfis.n_axes = 3
+    model = FTIC(book, cfg, TokenizerConfig(window=8), action_tags=[u200.ACTION_TAG])
+    ds_cfg = DatasetConfig(window=8, stride=64, delta_scale=0.05)
+    ds = EpisodeDataset(
+        u200.episodes_from_case(ROOT), book, ds_cfg, action_tag=u200.ACTION_TAG
+    )
+    texto = explain_sample(
+        model, book, ds[3], ds_cfg,
+        advisories=u200.ADVISORIES_U200, faults=("normal", "anormal"),
+    )
+    assert "Ação de controle" in texto
+    assert "classe_" not in texto        # nenhum rótulo fora do vocabulário

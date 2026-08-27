@@ -114,6 +114,17 @@ Coisas que já sabemos, e que custaram experimento:
    "estável" e a dimensão não informa nada.
 4. **O set-point precisa ser observável.** Sem ele, o erro de controle é
    inobservável e o alvo de imitação vira ruído.
-5. **No U-200, a informação causal está fora da janela de dados.** As ordens de
+5. **A máscara do pré-treino não pode esconder o instante `k`.** Mascarar 15%
+   dos tokens ao acaso apaga, em parte dos passos, exatamente o estado atual de
+   que a ação depende — e a tarefa de controle não sai do preditor trivial.
+   Mascarar apenas `lag > 0` preserva a auto-supervisão e libera o controle.
+6. **Ramos residuais precisam de inicialização escalada por 1/√(2N).** Sem
+   isso, a variância do fluxo residual cresce com a profundidade e a informação
+   específica de cada amostra some: medido aqui, 3 blocos ficavam presos no
+   preditor trivial (`skill ≈ 0`) enquanto 2 blocos aprendiam (`skill ≈ 0,46`).
+   Com a escala, 3 blocos vão a `skill ≈ 0,32` e 2 blocos sobem para `0,69`, nas
+   mesmas 300 iterações. A camada ANFIS soma `K` consequentes, então o efeito
+   aparece antes do que apareceria com um MLP.
+7. **No U-200, a informação causal está fora da janela de dados.** As ordens de
    trabalho relevantes precedem o historian em 10 dias. Supervisão distante
    dentro da janela não as alcança — daí QP-11.

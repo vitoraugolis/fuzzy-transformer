@@ -75,6 +75,29 @@ class FTIC(nn.Module):
         self.fault_head = (
             nn.Linear(cfg.d_model, cfg.n_fault_classes) if cfg.n_fault_classes > 0 else None
         )
+        self._scale_residual_branches()
+
+    # ------------------------------------------------------------------
+    def _scale_residual_branches(self) -> None:
+        """Reduz a projeção de saída de cada ramo residual por 1/√(2N).
+
+        Sem isso, a variância do fluxo residual cresce com a profundidade e a
+        informação específica de cada amostra some diante do que os blocos
+        acrescentam: medido aqui, um modelo de 3 blocos ficava preso no
+        preditor trivial enquanto o de 2 blocos aprendia normalmente. É o mesmo
+        ajuste de inicialização usado nos transformers profundos, e aqui ele é
+        necessário mais cedo porque a camada ANFIS soma K consequentes.
+        """
+        scale = (2.0 * max(self.cfg.n_blocks, 1)) ** -0.5
+        with torch.no_grad():
+            for blk in self.blocks:
+                blk.attn.out.weight.mul_(scale)
+                mixer = blk.anfis
+                out = getattr(mixer, "out", None)
+                if out is not None:
+                    out.weight.mul_(scale)
+                elif hasattr(mixer, "net"):
+                    mixer.net[-1].weight.mul_(scale)
 
     # ------------------------------------------------------------------
     def n_parameters(self) -> int:

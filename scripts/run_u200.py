@@ -108,7 +108,13 @@ def main() -> None:
 
     print("[5/5] interpretabilidade")
     sample = val_set[len(val_set) // 2]
-    (out_dir / "explicacao.txt").write_text(explain_sample(model, book, sample, ds_cfg))
+    (out_dir / "explicacao.txt").write_text(
+        explain_sample(
+            model, book, sample, ds_cfg,
+            advisories=u200.ADVISORIES_U200,
+            faults=("normal", "anormal"),
+        )
+    )
     (out_dir / "rules.txt").write_text(top_rules(model, val_set, ds_cfg, n=12))
     (out_dir / "report.json").write_text(
         json.dumps(

@@ -1,0 +1,9 @@
+# Núcleo
+numpy>=1.24
+torch>=2.0
+
+# Extração de texto dos PDFs do estudo de caso
+pypdf>=4.0
+
+# Testes
+pytest>=7.0

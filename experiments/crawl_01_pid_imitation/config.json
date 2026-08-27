@@ -1,0 +1,65 @@
+{
+  "name": "crawl-01",
+  "stage": "crawl",
+  "tokenizer": {
+    "window": 24,
+    "top_p": 3,
+    "layout": "tag_major",
+    "use_value_channel": true,
+    "use_lag_embedding": true
+  },
+  "model": {
+    "d_model": 128,
+    "n_blocks": 3,
+    "attention": {
+      "n_heads": 4,
+      "dropout": 0.0,
+      "causal": false,
+      "use_tag_bias": true
+    },
+    "anfis": {
+      "n_rules": 32,
+      "n_axes": 6,
+      "n_mfs": 3,
+      "n_heads": 4,
+      "consequent": "tsk1",
+      "rank": 8,
+      "hard_rules": false,
+      "firing_temperature": 1.0,
+      "dropout": 0.0
+    },
+    "n_actions": 1,
+    "action_terms": 7,
+    "n_advisories": 8,
+    "n_fault_classes": 5,
+    "mixer": "anfis",
+    "mlp_ratio": 4.0,
+    "n_context_slots": 0,
+    "dropout": 0.0,
+    "norm_eps": 1e-05
+  },
+  "train": {
+    "lr": 0.0008,
+    "weight_decay": 0.01,
+    "batch_size": 64,
+    "epochs": 15,
+    "warmup_steps": 150,
+    "grad_clip": 1.0,
+    "seed": 0,
+    "device": "cpu",
+    "w_action": 1.0,
+    "w_band": 0.5,
+    "w_advisory": 0.5,
+    "w_forecast": 0.05,
+    "w_masked_state": 0.05,
+    "w_rule_entropy": 0.001
+  },
+  "notes": "Imitação do professor (PI + supervisório) no simulador da malha TIC-102/V-097. Objetivo: verificar que a pilha atenção+ANFIS aprende a ação, o envelope de contingência e as orientações, e que fecha a malha sem degradar o desempenho.",
+  "tags": [
+    "T-102",
+    "P-204",
+    "F-301",
+    "V-097"
+  ],
+  "variable_book": null
+}

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Estudo de caso: a fonte é o zip; o diretório é gerado por scripts/setup_case_study.py
+/case_study/
+
+# Saídas de experimento
+runs/
+*.log
+*.pt
+__MACOSX/

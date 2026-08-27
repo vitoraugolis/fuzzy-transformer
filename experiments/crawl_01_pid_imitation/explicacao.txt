@@ -1,0 +1,40 @@
+=== Estado observado (instante k) ===
+  T-102   : 100% caindo_rapido (trend), 82% nulo (error), 69% mediano (level), 31% baixo (level)
+  SP-102  : 100% estavel (trend), 80% mediano (level), 20% baixo (level)
+  P-204   : 83% caindo (trend), 71% mediano (level), 29% baixo (level), 17% estavel (trend)
+  F-301   : 81% mediano (level), 73% estavel (trend), 27% subindo (trend), 19% baixo (level)
+  V-097   : 71% baixo (level), 33% caindo_rapido (trend), 33% caindo (trend), 33% estavel (trend)
+
+=== Ação de controle ===
+  Δu previsto      : +0.136 (=+1.36% de curso)
+  Δu antes do filtro: +0.136
+  envelope admissível: [-1.499, +1.496] ⇒ comando em [-0.150, 0.150]
+  alvo do professor : +0.247
+
+  distribuição linguística da ação:
+     28.7% manter
+     22.1% aumentar_muito
+     21.5% aumentar_pouco
+
+=== Diagnóstico ===
+   97.6% none
+    1.6% sensor_drift
+    0.8% valve_travel_limit
+  (verdade: none)
+
+=== Orientações às equipes ===
+  (nenhuma orientação acima do limiar)
+
+=== Regras dominantes por bloco ===
+  bloco 0 cabeça 0: regra #2 (força média 0.087) | SE eixo3 é alto[0.70] E eixo4 é alto[0.69]
+  bloco 0 cabeça 1: regra #17 (força média 0.074) | SE eixo0 é medio[0.71]
+  bloco 0 cabeça 2: regra #17 (força média 0.096) | SE eixo1 é medio[0.56]
+  bloco 0 cabeça 3: regra #19 (força média 0.082) | SE eixo3 é medio[0.72] E eixo4 é medio[0.62]
+  bloco 1 cabeça 0: regra #19 (força média 0.101) | SE eixo0 é alto[0.54] E eixo1 é medio[0.56] E eixo3 é baixo[0.62] E eixo5 é medio[0.59]
+  bloco 1 cabeça 1: regra #15 (força média 0.086) | SE eixo1 é medio[0.52] E eixo4 é alto[0.59]
+  bloco 1 cabeça 2: regra #11 (força média 0.105) | SE eixo0 é baixo[0.64] E eixo2 é baixo[0.66] E eixo3 é medio[0.61]
+  bloco 1 cabeça 3: regra #26 (força média 0.101) | SE (antecedente difuso)
+  bloco 2 cabeça 0: regra #2 (força média 0.082) | SE eixo0 é alto[0.51] E eixo1 é baixo[0.56] E eixo5 é medio[0.53]
+  bloco 2 cabeça 1: regra #18 (força média 0.074) | SE eixo3 é alto[0.63] E eixo5 é medio[0.59]
+  bloco 2 cabeça 2: regra #23 (força média 0.093) | SE eixo1 é medio[0.57] E eixo5 é baixo[0.53]
+  bloco 2 cabeça 3: regra #2 (força média 0.200) | SE eixo0 é medio[0.57] E eixo2 é alto[0.58] E eixo4 é medio[0.73] E eixo5 é alto[0.51]
